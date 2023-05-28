@@ -31,6 +31,12 @@
             </div>
         </div>
 
+        <span class="text-sm">
+            <span class="font-semibold">Password strength:</span> {{ $strengthLevels[$strengthScore] ?? 'Weak' }}
+        </span>
+
+        <progress value="{{ $strengthScore }}" max="4" class="w-full"></progress>
+
         <x-input-error :messages="$errors->get('password')" class="mt-2" />
     </div>
 
