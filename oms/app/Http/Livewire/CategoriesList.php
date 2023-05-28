@@ -2,12 +2,21 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Category;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class CategoriesList extends Component
 {
-    public function render()
+    use WithPagination;
+
+    public function render(): View
     {
-        return view('livewire.categories-list');
+        $categories = Category::paginate(10);
+
+        return view('livewire.categories-list', [
+            'categories' => $categories,
+        ]);
     }
 }

@@ -35,6 +35,7 @@
                             </thead>
 
                             <tbody class="bg-white divide-y divide-gray-200 divide-solid">
+                                @foreach($categories as $category)
                                     <tr class="bg-white">
                                         <td class="px-6">
                                             <button>
@@ -45,10 +46,10 @@
                                             </button>
                                         </td>
                                         <td class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
-                                            Category name
+                                            {{ $category->name }}
                                         </td>
                                         <td class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
-                                            Category slug
+                                            {{ $category->slug }}
                                         </td>
                                         <td class="px-6">
                                             <div class="inline-block relative mr-2 w-10 align-middle transition duration-200 ease-in select-none">
@@ -65,10 +66,11 @@
                                             </button>
                                         </td>
                                     </tr>
+                                    @endforeach
                             </tbody>
                         </table>
                     </div>
-
+                    {!! $categories->links() !!}
                 </div>
             </div>
         </div>
