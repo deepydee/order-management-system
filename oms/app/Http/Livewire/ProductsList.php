@@ -15,6 +15,8 @@ class ProductsList extends Component
 
     public array $categories = [];
     public array $countries = [];
+    public string $sortColumn = 'products.name';
+    public string $sortDirection = 'asc';
     public array $searchColumns = [
         'name' => '',
         'price' => ['', ''],
@@ -23,10 +25,31 @@ class ProductsList extends Component
         'country_id' => 0,
     ];
 
+    protected $queryString = [
+        'sortColumn' => [
+            'except' => 'products.name'
+        ],
+        'sortDirection' => [
+            'except' => 'asc',
+        ],
+    ];
+
     public function mount(): void
     {
         $this->categories = Category::pluck('name', 'id')->toArray();
         $this->countries = Country::pluck('name', 'id')->toArray();
+    }
+
+    public function sortByColumn($column): void
+    {
+        if ($this->sortColumn === $column) {
+            $this->sortDirection = $this->sortDirection === 'asc'
+                ? 'desc'
+                : 'asc';
+        } else {
+            $this->reset('sortDirection');
+            $this->sortColumn = $column;
+        }
     }
 
     public function render(): View
@@ -38,7 +61,7 @@ class ProductsList extends Component
 
         foreach ($this->searchColumns as $column => $value) {
             if (!empty($value)) {
-                $products->when($column == 'price', function ($products) use ($value) {
+                $products->when($column === 'price', function ($products) use ($value) {
                     if (is_numeric($value[0])) {
                         $products->where('products.price', '>=', $value[0] * 100);
                     }
@@ -46,11 +69,13 @@ class ProductsList extends Component
                         $products->where('products.price', '<=', $value[1] * 100);
                     }
                 })
-                ->when($column == 'category_id', fn($products) => $products->whereRelation('categories', 'id', $value))
-                ->when($column == 'country_id', fn($products) => $products->whereRelation('country', 'id', $value))
-                ->when($column == 'name', fn($products) => $products->where('products.' . $column, 'LIKE', '%' . $value . '%'));
+                ->when($column === 'category_id', fn($products) => $products->whereRelation('categories', 'id', $value))
+                ->when($column === 'country_id', fn($products) => $products->whereRelation('country', 'id', $value))
+                ->when($column === 'name', fn($products) => $products->where('products.' . $column, 'LIKE', '%' . $value . '%'));
             }
         }
+
+        $products->orderBy($this->sortColumn, $this->sortDirection);
 
         return view('livewire.products-list', [
             'products' => $products->paginate(10),
