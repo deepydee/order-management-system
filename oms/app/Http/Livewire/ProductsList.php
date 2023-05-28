@@ -34,6 +34,8 @@ class ProductsList extends Component
         ],
     ];
 
+    protected $listeners = ['delete'];
+
     public function mount(): void
     {
         $this->categories = Category::pluck('name', 'id')->toArray();
@@ -50,6 +52,22 @@ class ProductsList extends Component
             $this->reset('sortDirection');
             $this->sortColumn = $column;
         }
+    }
+
+    public function deleteConfirm($method, $id = null): void
+    {
+        $this->dispatchBrowserEvent('swal:confirm', [
+            'type'  => 'warning',
+            'title' => 'Are you sure?',
+            'text'  => '',
+            'id'    => $id,
+            'method' => $method,
+        ]);
+    }
+
+    public function delete(Product $product): void
+    {
+        $product->delete();
     }
 
     public function render(): View
