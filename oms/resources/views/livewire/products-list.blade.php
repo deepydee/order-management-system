@@ -10,12 +10,17 @@
             <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
 
-                    <div class="mb-4">
-                        <div class="mb-4">
-                            <a class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase bg-gray-800 rounded-md border border-transparent hover:bg-gray-700">
-                                Create Product
-                            </a>
-                        </div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <a class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase bg-gray-800 rounded-md border border-transparent hover:bg-gray-700 cursor-pointer">
+                            Create Product
+                        </a>
+                        <button type="button"
+                                wire:click="deleteConfirm('deleteSelected')"
+                                wire:loading.attr="disabled"
+                                @disabled(! $this->selectedCount)
+                                class="px-4 py-2 text-xs text-red-500 uppercase bg-red-200 rounded-md border border-transparent hover:text-red-700 hover:bg-red-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                            Delete Selected
+                        </button>
                     </div>
 
                     <div class="overflow-hidden overflow-x-auto mb-4 min-w-full align-middle sm:rounded-md">
@@ -100,7 +105,7 @@
                                 @foreach($products as $product)
                                     <tr class="bg-white">
                                         <td class="px-4 py-2 text-sm leading-5 text-gray-900 whitespace-no-wrap">
-                                            <input type="checkbox" value="{{ $product->id }}" wire:model="selected">
+                                            <input wire:model="selected" type="checkbox" value="{{ $product->id }}" wire:model="selected">
                                         </td>
                                         <td class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
                                             {{ $product->name }}
@@ -117,7 +122,7 @@
                                             ${{ number_format($product->price / 100, 2) }}
                                         </td>
                                         <td>
-                                            <a class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase bg-gray-800 rounded-md border border-transparent hover:bg-gray-700">
+                                            <a class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase bg-gray-800 rounded-md border border-transparent hover:bg-gray-700 cursor-pointer">
                                                 Edit
                                             </a>
                                             <button wire:click="deleteConfirm('delete', {{ $product->id }})" class="px-4 py-2 text-xs text-red-500 uppercase bg-red-200 rounded-md border border-transparent hover:text-red-700 hover:bg-red-300">
