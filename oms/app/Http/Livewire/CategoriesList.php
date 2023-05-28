@@ -7,6 +7,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 use Livewire\WithPagination;
+use \Cviebrock\EloquentSluggable\Services\SlugService;
 
 class CategoriesList extends Component
 {
@@ -26,6 +27,7 @@ class CategoriesList extends Component
     {
         return [
             'category.name' => ['required', 'string', 'min:3'],
+            'category.slug' => ['required', 'string'],
         ];
     }
 
@@ -38,6 +40,7 @@ class CategoriesList extends Component
     public function updatedCategoryName(): void
     {
         $this->validateOnly('category.name');
+        $this->category->slug = SlugService::createSlug(Category::class, 'slug',  $this->category->name);
     }
 
     public function toggleIsActive(Category $category): void
@@ -47,9 +50,14 @@ class CategoriesList extends Component
         ]);
     }
 
-    public function updateOrder($list)
+    public function editCategory(Category $category): void
     {
-        // dd($list);
+        $this->editedCategoryId = $category->id;
+        $this->category = $category;
+    }
+
+    public function updateOrder($list): void
+    {
         foreach ($list as $item) {
             $cat = $this->categories->firstWhere('id', $item['value']);
             $order = $item['order'] + ($this->currentPage - 1) * $this->perPage;
@@ -62,12 +70,24 @@ class CategoriesList extends Component
         }
     }
 
+    public function cancelCategoryEdit(): void
+    {
+        $this->resetValidation();
+        $this->reset('editedCategoryId');
+    }
+
     public function save(): void
     {
         $this->validate();
-        $this->category->position = Category::max('position') + 1;
+
+        if ($this->editedCategoryId === 0) {
+            $this->category->position = Category::max('position') + 1;
+        }
+
         $this->category->save();
-        $this->reset('showModal');
+
+        $this->resetValidation();
+        $this->reset('showModal', 'editedCategoryId');
     }
 
     public function render(): View
