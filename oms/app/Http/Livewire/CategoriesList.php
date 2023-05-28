@@ -90,6 +90,22 @@ class CategoriesList extends Component
         $this->reset('showModal', 'editedCategoryId');
     }
 
+    public function deleteConfirm($method, $id = null)
+    {
+        $this->dispatchBrowserEvent('swal:confirm', [
+            'type'   => 'warning',
+            'title'  => 'Are you sure?',
+            'text'   => '',
+            'id'     => $id,
+            'method' => $method,
+        ]);
+    }
+
+    public function delete(Category $category)
+    {
+        $category->delete();
+    }
+
     public function render(): View
     {
         $cats = Category::orderBy('position')->paginate($this->perPage);
