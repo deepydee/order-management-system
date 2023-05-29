@@ -13,7 +13,10 @@ Here are a few screenshots from the application:
 
     git clone git@github.com:deepydee/order-management-system.git
     cd oms
+    cp .env.example .env
     composer install
     npm install
+    php artisan key:generate
+    touch database/database.sqlite
     php artisan migrate:fresh --seed
     php artisan serve
