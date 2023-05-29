@@ -21,6 +21,7 @@
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"
         />
+        <link href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css" rel="stylesheet">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
     </head>
