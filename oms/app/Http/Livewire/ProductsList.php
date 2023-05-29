@@ -99,6 +99,7 @@ class ProductsList extends Component
         }
 
         $product->delete();
+        session()->flash('message', 'Post successfully deleted');
     }
 
     public function deleteSelected(): void
@@ -114,6 +115,7 @@ class ProductsList extends Component
         }
 
         $products->each->delete();
+        session()->flash('message', 'Post successfully deleted');
 
         $this->reset('selected');
     }

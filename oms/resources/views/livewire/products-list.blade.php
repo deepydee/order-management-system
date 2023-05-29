@@ -16,6 +16,12 @@
                         </div>
                     @enderror
 
+                    @if (session()->has('message'))
+                        <div class="p-3 mb-4 text-green-700 bg-green-200 rounded-md">
+                            {{ session('message') }}
+                        </div>
+                    @endif
+
                     <div class="flex items-center gap-2 mb-4">
                         <a href="{{ route('products.create') }}" class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase bg-gray-800 rounded-md border border-transparent hover:bg-gray-700 cursor-pointer">
                             Create Product

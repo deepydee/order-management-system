@@ -24,8 +24,8 @@ class ProductForm extends Component
     protected function rules(): array
     {
         return [
-            'product.name' => ['required', 'string'],
-            'product.description' => ['required'],
+            'product.name' => ['required', 'string', 'min:3'],
+            'product.description' => ['required', 'string', 'min:3'],
             'product.country_id' => ['required', 'integer', 'exists:countries,id'],
             'product.price' => ['required'],
             'categories' => ['required', 'array']
@@ -47,6 +47,16 @@ class ProductForm extends Component
         }
     }
 
+    public function updatedProductName()
+    {
+        $this->validateOnly('product.name');
+    }
+
+    public function updatedProductDescription()
+    {
+        $this->validateOnly('product.description');
+    }
+
     protected function initListsForFields(): void
     {
         $this->listsForFields['countries'] = Country::pluck('name', 'id')
@@ -65,7 +75,10 @@ class ProductForm extends Component
 
         $this->product->categories()->sync($this->categories);
 
-        return redirect()->route('products.index');
+        $message = $this->editing ? 'edited': 'created';
+
+        return redirect()->route('products.index')
+            ->with('message', 'Product was successfully '. $message);
     }
 
     public function render()

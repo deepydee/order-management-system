@@ -16,7 +16,7 @@
                         <div>
                             <x-input-label for="name" :value="__('Name')" />
 
-                            <x-text-input wire:model.defer="product.name" id="name" class="block mt-1 w-full" type="text" />
+                            <x-text-input wire:model="product.name" id="name" class="block mt-1 w-full" type="text" />
                             <x-input-error :messages="$errors->get('product.name')" class="mt-2" />
                         </div>
 
@@ -24,7 +24,7 @@
                             <x-input-label for="description" :value="__('Description')" />
 
                             <div wire:ignore>
-                                <textarea wire:model.defer="product.description" data-description="@this" id="description" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"></textarea>
+                                <textarea wire:model="product.description" data-description="@this" id="description" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"></textarea>
                             </div>
                             <x-input-error :messages="$errors->get('product.description')" class="mt-2" />
                         </div>
@@ -53,8 +53,6 @@
                                     <option value="{{ $key }}">{{ $value }}</option>
                                 @endforeach
                             </select>
-
-                            {{-- <x-choices wire:model="product.country_id" class="mt-1" id="country" name="country" :options="$this->listsForFields['countries']" /> --}}
 
                             <x-input-error :messages="$errors->get('product.country_id')" class="mt-2" />
                         </div>
