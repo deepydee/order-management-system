@@ -23,6 +23,16 @@ class ProductsList extends Component
 
     public string $sortColumn = 'products.name';
     public string $sortDirection = 'asc';
+    public int $perPage = 10;
+
+    public array $itemsToShow = [
+        10,
+        50,
+        100,
+        500,
+        1000,
+    ];
+
     public array $searchColumns = [
         'name' => '',
         'price' => ['', ''],
@@ -46,6 +56,11 @@ class ProductsList extends Component
     {
         $this->categories = Category::pluck('name', 'id')->toArray();
         $this->countries = Country::pluck('name', 'id')->toArray();
+    }
+
+    public function updatedPerPage()
+    {
+        $this->resetPage();
     }
 
     public function getSelectedCountProperty(): int
@@ -123,7 +138,7 @@ class ProductsList extends Component
         $products->orderBy($this->sortColumn, $this->sortDirection);
 
         return view('livewire.products-list', [
-            'products' => $products->paginate(10),
+            'products' => $products->paginate($this->perPage),
         ]);
     }
 }

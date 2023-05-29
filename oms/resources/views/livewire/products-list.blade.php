@@ -59,7 +59,8 @@
                                             @include('svg.sort')
                                         @endif
                                     </th>
-                                    <th class="px-6 py-3 text-left bg-gray-50">
+                                    <th class="px-6 py-3 text-center bg-gray-50">
+                                        <span class="text-xs font-medium tracking-wider leading-4 text-gray-500 uppercase">Items per page</span>
                                     </th>
                                 </tr>
 
@@ -101,7 +102,14 @@
                                                    class="w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
                                         </div>
                                     </td>
-                                    <td></td>
+                                    <td>
+                                        <select wire:model="perPage"
+                                        class="w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                            @foreach($itemsToShow as $item)
+                                                <option value="{{ $item }}">{{ $item }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
                                 </tr>
 
                             </thead>
