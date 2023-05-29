@@ -39,14 +39,23 @@
                         <div class="mt-4">
                             <x-input-label class="mb-1" for="categories" :value="__('Categories')" />
 
-                            List of categories
+                            <x-choices wire:model="categories" class="mt-1" id="categories" name="categories" :options="$this->listsForFields['categories']" multiple />
+
                             <x-input-error :messages="$errors->get('categories')" class="mt-2" />
                         </div>
 
                         <div class="mt-4">
                             <x-input-label class="mb-1" for="country" :value="__('Country')" />
 
-                            List of countries
+                            <select wire:model="product.country_id" class="w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 mt-1" id="country" name="country">
+                                <option value="">{{ __('Select country') }}</option>
+                                @foreach($this->listsForFields['countries'] as $key => $value)
+                                    <option value="{{ $key }}">{{ $value }}</option>
+                                @endforeach
+                            </select>
+
+                            {{-- <x-choices wire:model="product.country_id" class="mt-1" id="country" name="country" :options="$this->listsForFields['countries']" /> --}}
+
                             <x-input-error :messages="$errors->get('product.country_id')" class="mt-2" />
                         </div>
 

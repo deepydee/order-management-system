@@ -7,6 +7,8 @@ use App\Models\Country;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Livewire\Redirector;
 
 class ProductForm extends Component
 {
@@ -14,6 +16,10 @@ class ProductForm extends Component
     public bool $editing = false;
     public array $categories = [];
     public array $listsForFields = [];
+
+    protected $casts = [
+        'product.country_id' => 'integer',
+    ];
 
     protected function rules(): array
     {
@@ -48,6 +54,18 @@ class ProductForm extends Component
 
         $this->listsForFields['categories'] = Category::active()
             ->pluck('name', 'id')->toArray();
+    }
+
+    public function save(): RedirectResponse|Redirector
+    {
+        $this->validate();
+        $this->product->price = $this->product->price * 100;
+
+        $this->product->save();
+
+        $this->product->categories()->sync($this->categories);
+
+        return redirect()->route('products.index');
     }
 
     public function render()
