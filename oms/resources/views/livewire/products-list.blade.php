@@ -64,7 +64,9 @@
                                 </tr>
 
                                 <tr>
-                                    <td></td>
+                                    <td class="px-4 py-2 text-sm leading-5 text-gray-900 whitespace-no-wrap">
+                                        <input id="selectAllProducts" type="checkbox" value="">
+                                    </td>
                                     <td class="px-2 py-2">
                                         <input wire:model="searchColumns.name" type="text" placeholder="Search..."
                                                class="w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
@@ -108,7 +110,7 @@
                                 @foreach($products as $product)
                                     <tr class="bg-white">
                                         <td class="px-4 py-2 text-sm leading-5 text-gray-900 whitespace-no-wrap">
-                                            <input wire:model="selected" type="checkbox" value="{{ $product->id }}" wire:model="selected">
+                                            <input wire:model="selected" type="checkbox" class="product-item" value="{{ $product->id }}">
                                         </td>
                                         <td class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
                                             {{ $product->name }}
@@ -145,3 +147,21 @@
         </div>
     </div>
 </div>
+
+@push('js')
+    <script>
+        document.addEventListener("livewire:load", () => {
+            const selectAll = document.getElementById('selectAllProducts');
+            selectAll.addEventListener('change', (event) => {
+                const products = document.querySelectorAll('.product-item');
+                [...products].forEach(e => e.checked = event.currentTarget.checked);
+
+                const selectedValues = [...products]
+                    .filter(e => e.checked)
+                    .map(e => e.value);
+
+                @this.set('selected', selectedValues)
+            });
+        });
+    </script>
+@endpush
