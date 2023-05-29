@@ -83,12 +83,12 @@
                                                     Cancel
                                                 </x-primary-button>
                                             @else
-                                            <x-primary-button wire:click="editCategory({{ $category->id }})" class="mr-2">
-                                                Edit
-                                            </x-primary-button>
-                                            <button wire:click="deleteConfirm('delete', {{ $category->id }})" class="px-4 py-2 text-xs text-red-500 uppercase bg-red-200 rounded-md border border-transparent hover:text-red-700 hover:bg-red-300">
-                                                Delete
-                                            </button>
+                                            <span wire:click="editCategory({{ $category->id }})" class="mr-2" title="Edit">
+                                                @include('svg.btn-edit')
+                                            </span>
+                                            <span wire:click="deleteConfirm('delete', {{ $category->id }})" title="Delete">
+                                                @include('svg.btn-trash')
+                                            </span>
                                             @endif
                                         </td>
                                     </tr>
