@@ -13,6 +13,11 @@ class Category extends Model
 
     protected $fillable = ['name', 'slug', 'is_active', 'position'];
 
+    public function scopeActive($query)
+    {
+        $query->where('is_active', 1);
+    }
+
     public function sluggable(): array
     {
         return [

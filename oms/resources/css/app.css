@@ -9,3 +9,7 @@
 .toggle-checkbox:checked + .toggle-label {
     @apply bg-green-400;
 }
+
+.ck-editor__editable {
+    min-height: 200px;
+}
